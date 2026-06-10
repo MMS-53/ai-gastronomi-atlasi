@@ -1,0 +1,9 @@
+# =============================================
+# Streamlit Frontend — Python Bağımlılıkları
+# =============================================
+# Kurulum: pip install -r requirements.txt
+
+streamlit>=1.28.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+Pillow>=10.0.0
