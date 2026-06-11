@@ -128,11 +128,15 @@ def stars(rating):
     return "★" * full + "☆" * max(0, 5 - full)
 
 
-def render_place(place):
+def render_place(place, language="Türkçe"):
     attrs = place.get("attributes", place)
     name = escape(str(attrs.get("name", "Bilinmeyen Mekan")))
-    desc_tr = escape(str(attrs.get("description_tr", "Açıklama mevcut değil.")))
-    desc_en = escape(str(attrs.get("description_en", "Description not available.")))
+    if language == "Türkçe":
+        description_label = "Türkçe Açıklama"
+        description = escape(str(attrs.get("description_tr", "Açıklama mevcut değil.")))
+    else:
+        description_label = "English Description"
+        description = escape(str(attrs.get("description_en", "Description not available.")))
     rating = attrs.get("rating", 0)
     city = escape(str(get_relation(place, "city")))
     category = escape(str(get_relation(place, "category") or attrs.get("category_name", "")))
@@ -153,10 +157,8 @@ def render_place(place):
                 <div class="meta">{stars(rating)} {rating}/5</div>
                 <span class="badge">📍 {city}</span>
                 <span class="badge">🏷️ {category}</span>
-                <div class="label">Türkçe Açıklama</div>
-                <div class="text">{desc_tr}</div>
-                <div class="label">English Description</div>
-                <div class="text">{desc_en}</div>
+                <div class="label">{description_label}</div>
+                <div class="text">{description}</div>
             </div>
         </div>
         """,
@@ -226,7 +228,7 @@ if selected_city:
         cols = st.columns(2)
         for index, place in enumerate(places):
             with cols[index % 2]:
-                render_place(place)
+                render_place(place, language)
     else:
         st.info(f"{selected_city} için henüz mekan verisi bulunamadı.")
 else:
